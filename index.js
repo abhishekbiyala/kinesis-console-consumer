@@ -30,6 +30,12 @@ function getShardId (streamName) {
         if (data.StreamDescription.Shards.length) {
           // TODO For heavy duty cases, we would return all shard ids and spin
           // up a reader for each shards
+          if (data.StreamDescription.Shards.length > 1) {
+            debug('MULTIPLE SHARDS (%d) only reading the first: %s',
+              data.StreamDescription.Shards.length,
+              data.StreamDescription.Shards[0].ShardId
+            )
+          }
           resolve(data.StreamDescription.Shards[0].ShardId)
         } else {
           reject('No shards!')
